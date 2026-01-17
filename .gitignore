@@ -1,0 +1,15 @@
+Debug/
+Release/
+Flash/
+CPU1_RAM/
+*.obj
+*.out
+*.map
+*.pp
+*.pjt.imports
+*.mk
+*.launches
+.DS_Store
+Thumbs.db
+*.bak
+*.tmp
