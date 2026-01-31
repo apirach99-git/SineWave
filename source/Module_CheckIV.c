@@ -46,6 +46,10 @@ struct IV_READ_REG IV_Read_reg = {0,0,0,0,0,
 								  2048,2048,0,0,0,
 								  0,0,0,0,0,
 								  0,0,0,0,0,0,0};
+
+VrmsCalc_t Vrms_In;
+VrmsCalc_t Vrms_Out;
+
 //---External variable import--------------------------------------
 extern Uint16 arA2dBuff[];
 struct data_grp{
@@ -73,6 +77,7 @@ _iq Sbase;
 int buffAx;
 _iq buffAy;
 extern float Po_total;
+
 
 //----------------------------------------------------------------- 
 ////////////////////////////////////////////////////////////////
@@ -232,7 +237,12 @@ Uint16 buffA4 = arA2dBuff[A2dA4Buff];
 //= ========================Park Transform===============================//rms	Q17	Ibase = F004
     	IV_Read_reg.Isd = _IQ15mpy(IV_Read_reg.I_Alpha,-cos_Theta_o) + _IQ15mpy(IV_Read_reg.I_Beta,-sin_Theta_o);
     	IV_Read_reg.Isq = _IQ15mpy(IV_Read_reg.I_Alpha,sin_Theta_o)  + _IQ15mpy(IV_Read_reg.I_Beta,-cos_Theta_o);
-*/    }
+  */
+		float Vin_inst = IV_Read_reg.PU_VI/524.4;
+    	    Vrms_Update(&Vrms_In,  Vin_inst);
+    	    Vrms_Update(&Vrms_Out, IV_Read_reg.PU_VO);
+
+  }
 } 
 ////////////////////////////////////////////////////////////////
 

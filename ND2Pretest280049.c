@@ -33,6 +33,11 @@ uint8_t next_carry;
 uint8_t count1=1;
 uint16_t test,test1,ZRequest;
 
+extern VrmsCalc_t Vrms_In;
+extern VrmsCalc_t Vrms_Out;
+
+
+
 void main(void)
 {
 
@@ -105,16 +110,19 @@ void main(void)
     LCD_Update();
 
 
+    Vrms_Init(&Vrms_In,  200);
+    Vrms_Init(&Vrms_Out, 200);
+
     for(;;)
     {
         ServiceDog();
-        Record_fault();  //1    check new fault and save to e2prom
-        Normal_mode();   //2    run normal mode i/p=key up/down
-        CheckKeyIn();    //3    which key is pressed and up keystate
-        CheckMode();     //4    check mode whether normal or setting mode,entry with state norm_qck(0)
-        DataDisp();      //5    arrange data to keypad
-        SelectFunct();   //6    run key on normal mode function group1-7,entry only setting mode
-        SettingSubFNC(); //7    entry only setting mode and >=sub function
+        Record_fault();         //1    check new fault and save to e2prom
+        Normal_mode();      //2    run normal mode i/p=key up/down
+        CheckKeyIn();           //3    which key is pressed and up keystate
+        CheckMode();            //4    check mode whether normal or setting mode,entry with state norm_qck(0)
+        DataDisp();              //5    arrange data to keypad
+        SelectFunct();          //6    run key on normal mode function group1-7,entry only setting mode
+        SettingSubFNC();     //7    entry only setting mode and >=sub function
 
         DisplayNormal();
         Chk_Fault();
