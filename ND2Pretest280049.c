@@ -128,15 +128,17 @@ void main(void)
         Chk_Fault();
         Chk_FaultTimer();               //40sec Fault Timer
 
-        LCD_ShowInput3(test);
+  //      LCD_ShowInput3(test);
         LCD_ShowOutput3(test1);
     //    LCD_ZoneRequest(ZRequest);
 
         // ทุก ๆ 50 ms: update จอ 1 ครั้ง
        if (lcd_refresh_req)
-        {
+        {  test++;
             lcd_refresh_req = false;
         //    HT1621_RefreshAll();    // มี DINT/EINT สั้น ๆ ภายใน WriteData4() ทีละ addr
+            LCD_ZoneRequest(LCD_ZONE_INPUT);
+            LCD_ShowInput3(test);
             LCD_Service();
         }
     }

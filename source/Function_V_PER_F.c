@@ -359,7 +359,7 @@ void V_PER_F(void)
         Vs_alpha = (int16_t)(Vs_alpha_fp* 4096.0f);  // Q12
         Vs_beta  = (int16_t)(Vs_beta_fp  * 4096.0f);  // Q12
 
-   PR_Reg_IQ.Ref = _IQ12mpy(2600,Vs_alpha);
+   PR_Reg_IQ.Ref = _IQ12mpy(2920,Vs_alpha);
    PR_Reg_IQ.Ref = PR_Reg_IQ.Ref<<5;
    PR_Reg_IQ.Fdb = IV_Read_reg.PU_VO>>2;
 

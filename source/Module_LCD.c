@@ -353,12 +353,12 @@ void HT1621_WriteData4(uint8_t addr, uint8_t data4)
     /* 6-bit address, MSB-first */
 
     ht1621_write_bits_msb(addr, 6U);
-    data4=0x0FU;
+   // data4=0x0FU;
     /* 4-bit data, LSB-first (ตามตัวอย่างส่วนใหญ่ของ HT1621) */
     ht1621_write_bits_lsb(data4, 4U);
 
     HT1621_CS_HIGH();
-//    DEVICE_DELAY_US(5);
+    //DEVICE_DELAY_US(1);
 
 //    HT1621_EXIT_CRITICAL();
 }
@@ -370,12 +370,13 @@ static void ht1621_write_bit(uint8_t bit)
 {
 
     HT1621_WR_LOW();
+    DEVICE_DELAY_US(1);
     if(bit) HT1621_DATA_HIGH();
     else    HT1621_DATA_LOW();
 
 
     /* ถ้าจำเป็นค่อยเติม delay สั้น ๆ ตรงนี้ */
- //   DEVICE_DELAY_US(5);
+    DEVICE_DELAY_US(1);
     HT1621_WR_HIGH();
 }
 ///////////////////////////////////////////////////////////////////////////////////////////
@@ -386,7 +387,7 @@ static void ht1621_write_bit(uint8_t bit)
 static void ht1621_write_bits_msb(uint16_t data, uint8_t len)
 {int8_t i;
     for(i = (int8_t)len - 1; i >= 0; i--)
-    {
+    {  DEVICE_DELAY_US(1);
         ht1621_write_bit((data >> i) & 0x1U);
     }
 }
@@ -398,7 +399,7 @@ static void ht1621_write_bits_msb(uint16_t data, uint8_t len)
 static void ht1621_write_bits_lsb(uint8_t data, uint8_t len)
 { uint8_t i;
     for( i = 0; i < len; i++)
-    {
+    {  DEVICE_DELAY_US(1);
         ht1621_write_bit((data >> i) & 0x1U);
     }
 }
