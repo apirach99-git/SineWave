@@ -57,7 +57,7 @@
 //
 #if (G1_7PL != 0)
 __interrupt void TIMER0_ISR(void)
-{   //GPIO_writePin(37, 1);
+{   //GPIO_writePin(57, 1);
     // Set interrupt priority:
     volatile uint16_t TempPIEIER = PieCtrlRegs.PIEIER1.all;
     IER |= M_INT1;
@@ -111,7 +111,7 @@ __interrupt void TIMER0_ISR(void)
     //
     //  Add ISR to Trace
     //
-    //GPIO_writePin(37, 0);
+   // GPIO_writePin(57, 0);
 }
 #endif
 

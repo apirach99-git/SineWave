@@ -246,9 +246,9 @@ void LCD_Init(void)
        แต่ถ้าคุณเรียก HT1621_Init() อยู่แล้ว ก็ปล่อยไว้เฉย ๆ */
     // HT1621_Init();
     LCD_ZoneRequest(LCD_ZONE_INPUT);
-    LCD_ZoneRequest(LCD_ZONE_CENTER);
-    LCD_ZoneRequest(LCD_ZONE_OUTPUT);
-    LCD_ZoneRequest(LCD_ZONE_MINIC);
+//    LCD_ZoneRequest(LCD_ZONE_CENTER);
+//    LCD_ZoneRequest(LCD_ZONE_OUTPUT);
+ //   LCD_ZoneRequest(LCD_ZONE_MINIC);
 }
 
 /* =========================
@@ -344,22 +344,22 @@ void HT1621_WriteData4(uint8_t addr, uint8_t data4)
     data4 &= 0x0FU;     /* limit to 4 bits */
 
  //   HT1621_ENTER_CRITICAL();
-
+    DEVICE_DELAY_US(2);
     HT1621_CS_LOW();
-
+    DEVICE_DELAY_US(2);
     /* 3-bit header: 101 = write data */
     ht1621_write_bits_msb(0b101U, 3U);
-
+    DEVICE_DELAY_US(2);
     /* 6-bit address, MSB-first */
 
     ht1621_write_bits_msb(addr, 6U);
    // data4=0x0FU;
     /* 4-bit data, LSB-first (ตามตัวอย่างส่วนใหญ่ของ HT1621) */
     ht1621_write_bits_lsb(data4, 4U);
-
+    DEVICE_DELAY_US(2);
     HT1621_CS_HIGH();
-    //DEVICE_DELAY_US(1);
-
+    //DEVICE_DELAY_US(2);
+    DEVICE_DELAY_US(2);
 //    HT1621_EXIT_CRITICAL();
 }
 ///////////////////////////////////////////////////////////////////////////////////////////
@@ -368,16 +368,17 @@ void HT1621_WriteData4(uint8_t addr, uint8_t data4)
 /* ส่ง 1 บิตไปที่ HT1621 (DATA → WR toggle) */
 static void ht1621_write_bit(uint8_t bit)
 {
-
+    DEVICE_DELAY_US(2);
     HT1621_WR_LOW();
-    DEVICE_DELAY_US(1);
+    DEVICE_DELAY_US(2);
     if(bit) HT1621_DATA_HIGH();
     else    HT1621_DATA_LOW();
 
 
     /* ถ้าจำเป็นค่อยเติม delay สั้น ๆ ตรงนี้ */
-    DEVICE_DELAY_US(1);
+    DEVICE_DELAY_US(2);
     HT1621_WR_HIGH();
+    DEVICE_DELAY_US(2);
 }
 ///////////////////////////////////////////////////////////////////////////////////////////
 /*
@@ -387,8 +388,9 @@ static void ht1621_write_bit(uint8_t bit)
 static void ht1621_write_bits_msb(uint16_t data, uint8_t len)
 {int8_t i;
     for(i = (int8_t)len - 1; i >= 0; i--)
-    {  DEVICE_DELAY_US(1);
+    {  DEVICE_DELAY_US(2);
         ht1621_write_bit((data >> i) & 0x1U);
+        DEVICE_DELAY_US(2);
     }
 }
 ///////////////////////////////////////////////////////////////////////////////////////////
@@ -399,8 +401,9 @@ static void ht1621_write_bits_msb(uint16_t data, uint8_t len)
 static void ht1621_write_bits_lsb(uint8_t data, uint8_t len)
 { uint8_t i;
     for( i = 0; i < len; i++)
-    {  DEVICE_DELAY_US(1);
+    {  DEVICE_DELAY_US(2);
         ht1621_write_bit((data >> i) & 0x1U);
+        DEVICE_DELAY_US(2);
     }
 }
 ///////////////////////////////////////////////////////////////////////////////////////////
@@ -464,7 +467,7 @@ void HT1621_Command(uint8_t cmd)
    // HT1621_ENTER_CRITICAL();
 
     HT1621_CS_LOW();
-
+    DEVICE_DELAY_US(2);
     /* 3-bit header: 100 = command mode */
     ht1621_write_bits_msb(0b1000U, 4U);
 
@@ -473,7 +476,7 @@ void HT1621_Command(uint8_t cmd)
 
     HT1621_CS_HIGH();
 
-//   DEVICE_DELAY_US(5);
+   DEVICE_DELAY_US(2);
 
   //  HT1621_EXIT_CRITICAL();
 }

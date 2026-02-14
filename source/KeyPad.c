@@ -3789,7 +3789,7 @@ reload_default :
 void interrupt_timer(void)  //1ms
 {
     static uint16_t cnt = 0;
-    if (++cnt >= 1000)   // 10 kHz / 1000 = 10 Hz
+    if (++cnt >= 10000)   // 10 kHz / 1000 = 10 Hz
     {
         cnt = 0;
         lcd_refresh_req = true;  // ขอให้ main ไป refresh LCD
