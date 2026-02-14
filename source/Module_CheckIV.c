@@ -47,8 +47,13 @@ struct IV_READ_REG IV_Read_reg = {0,0,0,0,0,
 								  0,0,0,0,0,
 								  0,0,0,0,0,0,0};
 
-VrmsCalc_t Vrms_In;
-VrmsCalc_t Vrms_Out;
+// --- Renaming for generic use ---
+// #define RMS_Update Vrms_Update  <-- Removed
+// typedef VrmsCalc_t RMSCalc_t;   <-- Removed
+
+RMSCalc_t Vrms_In;
+RMSCalc_t Vrms_Out;
+RMSCalc_t Irms_Out; // Added for Output Current RMS
 
 //---External variable import--------------------------------------
 extern Uint16 arA2dBuff[];
@@ -156,7 +161,7 @@ Uint16 buffA4 = arA2dBuff[A2dA4Buff];
 			//Phase U
 			//IV_Read_reg.PU_IU = IPhase(buffA0,IV_Read_reg.CenterIu);
 		    buff_long = IPhasePok(buffA0, IV_Read_reg.CenterIu);
-			IV_Read_reg.PU_IU = LowPassFilter(buff_long, IV_Read_reg.PU_IU, Cons_I_per_phase, IQ17_1);
+			IV_Read_reg.PU_IU = LowPassFilter(buff_long, IV_Read_reg.PU_IU, 0, IQ17_1);
 
             if((SinTheta_fp>=0)&&(IV_Read_reg.PU_VI_last<0))
                 {
@@ -165,8 +170,8 @@ Uint16 buffA4 = arA2dBuff[A2dA4Buff];
                 }
             IV_Read_reg.PU_VI_last=SinTheta_fp;
 
-		buff_long = IPhasePok(buffA0,IV_Read_reg.CenterIu);
-		IV_Read_reg.PU_IU = _IQ17mpy(43691,buff_long)+_IQ17mpy(87381,IV_Read_reg.PU_IU);//cutoff 2.5kHz
+		//buff_long = IPhasePok(buffA0,IV_Read_reg.CenterIu);
+		//IV_Read_reg.PU_IU = _IQ17mpy(43691,buff_long)+_IQ17mpy(87381,IV_Read_reg.PU_IU);//cutoff 2.5kHz
 
 			if(grp_num[0].value[11]==0)//check model small or large mainboard
 			{
@@ -238,9 +243,17 @@ Uint16 buffA4 = arA2dBuff[A2dA4Buff];
     	IV_Read_reg.Isd = _IQ15mpy(IV_Read_reg.I_Alpha,-cos_Theta_o) + _IQ15mpy(IV_Read_reg.I_Beta,-sin_Theta_o);
     	IV_Read_reg.Isq = _IQ15mpy(IV_Read_reg.I_Alpha,sin_Theta_o)  + _IQ15mpy(IV_Read_reg.I_Beta,-cos_Theta_o);
   */
-		float Vin_inst = IV_Read_reg.PU_VI/524.4;
-    	    Vrms_Update(&Vrms_In,  Vin_inst);
-    	    Vrms_Update(&Vrms_Out, IV_Read_reg.PU_VO);
+// 		float Vin_inst = IV_Read_reg.PU_VI/524.4;
+		float Vin_inst = IV_Read_reg.PU_VI*0.001906941; // Using multiplication instead of division for speed
+		float Vout_inst = IV_Read_reg.PU_VO*0.001906941; // Using multiplication instead of division for speed
+		float Iout_inst = IV_Read_reg.PU_IU*0.001906941; // Using multiplication instead of division for speed
+    	    RMS_Update(&Vrms_In,  Vin_inst);
+    	    RMS_Update(&Vrms_Out, Vout_inst);
+            
+            // Calculate Output Current RMS (Single Phase)
+            RMS_Update(&Irms_Out,Iout_inst);
+            
+           // IV_Read_reg.I_rms = Irms_Out.rms;
 
   }
 } 

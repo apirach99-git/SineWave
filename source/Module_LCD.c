@@ -88,6 +88,39 @@ static uint8_t font7seg(int8_t v)
         };
         return tbl[(uint8_t)v];
     }
+
+    if(v >= 'A' && v <= 'Z')
+    {
+        static const uint8_t tbl_alpha[26] = {
+            (SEG_A|SEG_B|SEG_C|SEG_E|SEG_F|SEG_G),        // A
+            (SEG_C|SEG_D|SEG_E|SEG_F|SEG_G),              // B (b)
+            (SEG_A|SEG_D|SEG_E|SEG_F),                    // C
+            (SEG_B|SEG_C|SEG_D|SEG_E|SEG_G),              // D (d)
+            (SEG_A|SEG_D|SEG_E|SEG_F|SEG_G),              // E
+            (SEG_A|SEG_E|SEG_F|SEG_G),                    // F
+            (SEG_A|SEG_C|SEG_D|SEG_E|SEG_F),              // G
+            (SEG_B|SEG_C|SEG_E|SEG_F|SEG_G),              // H
+            (SEG_B|SEG_C),                                // I
+            (SEG_B|SEG_C|SEG_D|SEG_E),                    // J
+            (SEG_D|SEG_E|SEG_F|SEG_G),                    // K (same as H/t? used t here as placeholder or specific)
+            (SEG_D|SEG_E|SEG_F),                          // L
+            (SEG_A|SEG_C|SEG_E),                          // M
+            (SEG_C|SEG_E|SEG_G),                          // N (n)
+            (SEG_A|SEG_B|SEG_C|SEG_D|SEG_E|SEG_F),        // O
+            (SEG_A|SEG_B|SEG_E|SEG_F|SEG_G),              // P
+            (SEG_A|SEG_B|SEG_C|SEG_F|SEG_G),              // Q (q)
+            (SEG_E|SEG_G),                                // R (r)
+            (SEG_A|SEG_C|SEG_D|SEG_F|SEG_G),              // S (5)
+            (SEG_D|SEG_E|SEG_F|SEG_G),                    // T (t)
+            (SEG_B|SEG_C|SEG_D|SEG_E|SEG_F),              // U
+            (SEG_C|SEG_D|SEG_E),                          // V (u/v)
+            (SEG_C|SEG_D|SEG_E|SEG_G),                    // W (approx)
+            (SEG_B|SEG_C|SEG_E|SEG_F|SEG_G),              // X (H)
+            (SEG_B|SEG_C|SEG_D|SEG_F|SEG_G),              // Y (y)
+            (SEG_A|SEG_B|SEG_D|SEG_E|SEG_G)               // Z (2)
+        };
+        return tbl_alpha[v - 'A'];
+    }
     if(v == -2) return (SEG_G); // '-'
     return 0;                   // blank
 }
@@ -211,14 +244,108 @@ void LCD_ZoneRequest(LcdZone z)
     g_zone_req |= (uint16_t)(1U << (uint16_t)z);
 }
 
+
+// Static update functions for each zone
+static void LCD_Update_Input_Zone_Data(void)
+{
+    
+    segWrite(&LCDi_INPUT, 1);
+    // Update Input Zone (Digit 1-3)
+    // Example: Show Input Voltage (Vrms_In)
+    LCD_ShowInput3(Vrms_In.rms);
+    segWrite(&LCDi_V, 1); // Turn on 'V' icon
+}
+
+static void LCD_Update_Center_Zone_Data(void)
+{
+    // Update Center Zone (Digit 4-5)
+    // Example: Show state or dummy value
+    // LCD_ShowCenter2(state_tens, state_ones);
+
+    segWrite(&LCDc_Line, 1);
+
+}
+
+static void LCD_Update_Output_Zone_Data(void)
+{
+    segWrite(&LCDo_OUTPUT, 1);
+    // Update Output Zone (Digit 6-8)
+    // Example: Show Output Voltage (Vrms_Out)
+    //LCD_ShowOutput3(Vrms_Out.rms); // remove cast to int16_t
+    LCD_ShowOutput3(Irms_Out.rms);
+    segWrite(&LCDo_V, 1); // Turn on 'V' icon
+}
+
+static void LCD_Update_Minic_Zone_Data(void)
+{
+    // Update Minic Zone
+    // Example: Update status icons
+    segWrite(&LCDmLine, 1);
+    segWrite(&LCDmOVERLOAD, 1);
+    segWrite(&LCDmBYPASS, 1);
+    segWrite(&LCDmLine, 1);
+    segWrite(&LCDm25p100p, 1);
+    segWrite(&LCDmLamp, 1);
+    segWrite(&LCDmLout, 1);
+    segWrite(&LCDmP, 1);
+    
+    segWrite(&LCDmLoadLv1, 1);
+    segWrite(&LCDmLoadLv2, 1);
+    segWrite(&LCDmLoadLv3, 1);
+    segWrite(&LCDmLoadLv4, 1);
+    segWrite(&LCDmLi, 1);
+    segWrite(&LCDmSLA, 1);
+    segWrite(&LCDmINV, 1);
+    segWrite(&LCDmACtoLoad, 1);
+    
+    segWrite(&LCDmBATTtoLoad, 1);
+    segWrite(&LCDmRECtoBATT, 1);
+    segWrite(&LCDmRECtoINV, 1);
+    segWrite(&LCDmECO, 1);
+    segWrite(&LCDmCHARGING, 1);
+    segWrite(&LCDmBATT, 1);
+    segWrite(&LCDmREC, 1);
+    segWrite(&LCDmPVtoREC, 1);
+
+    segWrite(&LCDmBATTLv1, 1);
+    segWrite(&LCDmBATTLv2, 1);
+    segWrite(&LCDmBATTLv3, 1);
+    segWrite(&LCDmBATTLv4, 1);
+    segWrite(&LCDmAC, 1);
+    segWrite(&LCDmWING, 1);
+    segWrite(&LCDmACtoREC, 1);
+    segWrite(&LCDmWINGtoREC, 1);
+
+    segWrite(&LCDmPV, 1);
+    segWrite(&LCDmPVLv3, 1);
+    segWrite(&LCDmPVLv2, 1);
+    segWrite(&LCDmPVLv1, 1);
+}
+
 static void refresh_zone(LcdZone z)
 {
     switch(z)
     {
-        case LCD_ZONE_INPUT:  refresh_range(0, 9); LCD_ZoneRequest(LCD_ZONE_CENTER);  break;
-        case LCD_ZONE_CENTER: refresh_range(10,14);  LCD_ZoneRequest(LCD_ZONE_OUTPUT);break;
-        case LCD_ZONE_OUTPUT: refresh_range(15,22); LCD_ZoneRequest(LCD_ZONE_MINIC); break;
-        case LCD_ZONE_MINIC:  refresh_range(23,31);  LCD_ZoneRequest(LCD_ZONE_INPUT);break;
+        case LCD_ZONE_INPUT:  
+            LCD_Update_Input_Zone_Data();
+            refresh_range(0, 9); 
+            LCD_ZoneRequest(LCD_ZONE_CENTER);  
+            break;
+        case LCD_ZONE_CENTER: 
+            LCD_Update_Center_Zone_Data();
+            refresh_range(10,14);  
+            LCD_ZoneRequest(LCD_ZONE_OUTPUT);
+            break;
+        case LCD_ZONE_OUTPUT: 
+            LCD_Update_Output_Zone_Data();
+            refresh_range(15,22); 
+            LCD_ZoneRequest(LCD_ZONE_MINIC); 
+            break;
+        case LCD_ZONE_MINIC:  
+            LCD_Update_Minic_Zone_Data();
+            refresh_range(23,31);  
+            LCD_ZoneRequest(LCD_ZONE_INPUT);
+            break;
         default: break;
     }
 }
@@ -276,18 +403,51 @@ void LCD_SetDigit(uint8_t digit_id, int8_t value, bool dp_on)
   //  LCD_ZoneRequest(digitToZone(digit_id));
 }
 
-void LCD_ShowInput3(int16_t n)
+void LCD_ShowInput3(float n)
 {
+    int16_t val;
     int8_t d1, d2, d3;
-    if(n < 0) n = 0;
-    if(n > 999) n = 999;
+    bool dp1 = false;
+    bool dp2 = false;
 
-    d1 = (int8_t)(n / 100);
-    d2 = (int8_t)((n / 10) % 10);
-    d3 = (int8_t)(n % 10);
+    if(n < 0.0f) n = 0.0f;
+    if(n > 999.0f) n = 999.0f;
 
-    if(d1 == 0) LCD_SetDigit(1, -1, false); else LCD_SetDigit(1, d1, false);
-    if(d1 == 0 && d2 == 0) LCD_SetDigit(2, -1, false); else LCD_SetDigit(2, d2, false);
+    if(n < 10.0f)
+    {
+        // 0.00 - 9.99
+        val = (int16_t)(n * 100.0f + 0.5f);
+        if(val > 999) val = 999;
+        
+        d1 = (int8_t)((val / 100) % 10);
+        d2 = (int8_t)((val / 10) % 10);
+        d3 = (int8_t)(val % 10);
+        dp1 = true;
+    }
+    else if(n < 100.0f)
+    {
+        // 10.0 - 99.9
+        val = (int16_t)(n * 10.0f + 0.5f);
+        if(val > 999) val = 999;
+
+        d1 = (int8_t)((val / 100) % 10);
+        d2 = (int8_t)((val / 10) % 10);
+        d3 = (int8_t)(val % 10);
+        dp2 = true;
+    }
+    else
+    {
+        // >= 100
+        val = (int16_t)(n + 0.5f);
+        if(val > 999) val = 999;
+
+        d1 = (int8_t)((val / 100) % 10);
+        d2 = (int8_t)((val / 10) % 10);
+        d3 = (int8_t)(val % 10);
+    }
+
+    LCD_SetDigit(1, d1, dp1);
+    LCD_SetDigit(2, d2, dp2);
     LCD_SetDigit(3, d3, false);
 }
 
@@ -297,18 +457,59 @@ void LCD_ShowCenter2(int8_t tens, int8_t ones)
     LCD_SetDigit(5, ones, false);
 }
 
-void LCD_ShowOutput3(int16_t n)
+void LCD_ShowOutput3(float n)
 {
+    int16_t val;
     int8_t d6, d7, d8;
-    if(n < 0) n = 0;
-    if(n > 999) n = 999;
+    bool dp6 = false;
+    bool dp7 = false;
 
-    d6 = (int8_t)(n / 100);
-    d7 = (int8_t)((n / 10) % 10);
-    d8 = (int8_t)(n % 10);
+    if(n < 0.0f) n = 0.0f;
+    if(n > 999.0f) n = 999.0f;
 
-    if(d6 == 0) LCD_SetDigit(6, -1, false); else LCD_SetDigit(6, d6, false);
-    if(d6 == 0 && d7 == 0) LCD_SetDigit(7, -1, false); else LCD_SetDigit(7, d7, false);
+    if(n < 10.0f)
+    {
+        // 0.00 - 9.99
+        val = (int16_t)(n * 100.0f + 0.5f);
+        if(val > 999) val = 999;
+        
+        d6 = (int8_t)((val / 100) % 10);
+        d7 = (int8_t)((val / 10) % 10);
+        d8 = (int8_t)(val % 10);
+        dp6 = true;
+    }
+    else if(n < 100.0f)
+    {
+        // 10.0 - 99.9
+        val = (int16_t)(n * 10.0f + 0.5f);
+        if(val > 999) val = 999;
+
+        d6 = (int8_t)((val / 100) % 10);
+        d7 = (int8_t)((val / 10) % 10);
+        d8 = (int8_t)(val % 10);
+        dp7 = true;
+    }
+    else
+    {
+        // >= 100
+        val = (int16_t)(n + 0.5f);
+        if(val > 999) val = 999;
+
+        d6 = (int8_t)((val / 100) % 10);
+        d7 = (int8_t)((val / 10) % 10);
+        d8 = (int8_t)(val % 10);
+    }
+
+    if(d6 == 0 && !dp6 && !dp7) // Leading zero suppression for integer part
+    {
+        LCD_SetDigit(6, -1, false); 
+        if(d7 == 0) LCD_SetDigit(7, -1, false); else LCD_SetDigit(7, d7, dp7);
+    }
+    else
+    {
+         LCD_SetDigit(6, d6, dp6);
+         LCD_SetDigit(7, d7, dp7);
+    }
     LCD_SetDigit(8, d8, false);
 }
 

@@ -31,8 +31,8 @@ uint8_t addr;
 uint8_t carry = 0;
 uint8_t next_carry;
 uint8_t count1=1;
-uint16_t test,test1,ZRequest;
-
+uint16_t test1,ZRequest;
+float test;
 extern VrmsCalc_t Vrms_In;
 extern VrmsCalc_t Vrms_Out;
 
@@ -97,17 +97,17 @@ void main(void)
     ePWM_Setup();
     initE2Prom();
 
-    HT1621_Init();      // config GPIO + à»Ô´ HT1621 + clear ¨Í
+    HT1621_Init();      // config GPIO + ï¿½ï¿½Ô´ HT1621 + clear ï¿½ï¿½
     LCD_Init();
     //Enable 5V supply for DOUT
     GpioDataRegs.GPBSET.bit.GPIO39 = 1;
 
     GpioDataRegs.GPBSET.bit.GPIO33 = 0;
 
-    LCD_ShowInput3(123);
-    LCD_ShowCenter2(4,5);
+    LCD_ShowInput3(12.3);
+    LCD_ShowCenter2('A','B');
     LCD_ShowOutput3(678);
-    LCD_Update();
+
 
     test = 0;
     Vrms_Init(&Vrms_In,  200);
@@ -132,15 +132,12 @@ void main(void)
   //      LCD_ShowOutput3(test1);
     //    LCD_ZoneRequest(ZRequest);
 
-        // ·Ø¡ æ 50 ms: update ¨Í 1 ¤ÃÑé§
+        // ï¿½Ø¡ ï¿½ 50 ms: update ï¿½ï¿½ 1 ï¿½ï¿½ï¿½ï¿½ï¿½
        if (lcd_refresh_req)
-        {  test++;
+        {  test=test+0.001;
             lcd_refresh_req = false;
-        //    HT1621_RefreshAll();    // ÁÕ DINT/EINT ÊÑé¹ æ ÀÒÂã¹ WriteData4() ·ÕÅÐ addr
+        //    HT1621_RefreshAll();    // ï¿½ï¿½ DINT/EINT ï¿½ï¿½ï¿½ï¿½ ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ WriteData4() ï¿½ï¿½ï¿½ï¿½ addr
      //       LCD_ZoneRequest(LCD_ZONE_INPUT);
-         //   LCD_ShowInput3(test);
-         //   LCD_ShowOutput3(999-test);
-
             LCD_Service();
         }
     }

@@ -68,7 +68,7 @@
 //2012-8-10 : debugged display WOC by clearing bit statusB
 //2012-8-15 : add converse IQ F021,F022 temporaly
 //2012-8-18 : add display DC brk
-//2012-8-20 : revised display »Ñ´àÈÉ
+//2012-8-20 : revised display ï¿½Ñ´ï¿½ï¿½ï¿½
 //2012-8-30 : add converse IQ F420
 //2012-8-31 : add function read VR key
 //2012-9-1 : add function display RPM
@@ -312,7 +312,7 @@ float32 pow_maxdec = 0.0;
     if(buff1>=_IQ17(0.5))
     {
         buffdata = buffdata-_IQ17div(buff1,_IQ17(pow_maxdec));//1863.999878->1863.90000 if max dec = 1
-        buffdata = buffdata+_IQ17div(_IQ17(1.01),_IQ17(pow_maxdec));//»Ñ´àÈÉ ¶éÒ·È¹ÔÂÁ decmax >5
+        buffdata = buffdata+_IQ17div(_IQ17(1.01),_IQ17(pow_maxdec));//ï¿½Ñ´ï¿½ï¿½ï¿½ ï¿½ï¿½Ò·È¹ï¿½ï¿½ï¿½ decmax >5
     }
 
     int_part = _IQ17int(buffdata);
@@ -3789,10 +3789,10 @@ reload_default :
 void interrupt_timer(void)  //1ms
 {
     static uint16_t cnt = 0;
-    if (++cnt >= 10000)   // 10 kHz / 1000 = 10 Hz
+    if (++cnt >= 1000)   // 10 kHz / 1000 = 10 Hz
     {
         cnt = 0;
-        lcd_refresh_req = true;  // ¢ÍãËé main ä» refresh LCD
+        lcd_refresh_req = true;  // ï¿½ï¿½ï¿½ï¿½ï¿½ main ï¿½ refresh LCD
 
     }
 
