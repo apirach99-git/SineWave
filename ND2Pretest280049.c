@@ -128,10 +128,6 @@ void main(void)
         Chk_Fault();
         Chk_FaultTimer();               //40sec Fault Timer
 
-  //      LCD_ShowInput3(test);
-  //      LCD_ShowOutput3(test1);
-    //    LCD_ZoneRequest(ZRequest);
-
         // �ء � 50 ms: update �� 1 �����
        if (lcd_refresh_req)
         {  test=test+0.001;
