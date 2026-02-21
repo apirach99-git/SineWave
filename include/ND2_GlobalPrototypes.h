@@ -244,6 +244,9 @@ extern void SetupPRControl(void);
 
 extern void RMS_SystemInit(void);
 
+extern void CalPRControl(void);    // legacy — ควรเพิ่ม PR_Update/PR_Init ด้วย
+extern void SetupPRControl(void);
+
 #ifdef __cplusplus
 }
 #endif 
