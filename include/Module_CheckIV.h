@@ -98,11 +98,6 @@ extern RMSCalc_t Vrms_In;
 extern RMSCalc_t Vrms_Out;
 extern RMSCalc_t Irms_Out; // Added external declaration
 
-// Backward compatibility
-typedef RMSCalc_t VrmsCalc_t;
-#define Vrms_Init RMS_Init
-#define Vrms_Update RMS_Update // In case old code uses it
-
 #endif  // 
 
 //===========================================================================

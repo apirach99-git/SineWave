@@ -131,7 +131,16 @@ void PR_Update(PR_t *pr)
     else if (pr->OutPreSat <  pr->OutMin) pr->Out = pr->OutMin;
     else                                  pr->Out = pr->OutPreSat;
 
-    pr->SatErr = pr->Out - pr->OutPreSat;   /* anti-windup info */
+    pr->SatErr = pr->Out - pr->OutPreSat;   /* negative when sat-high, positive when sat-low */
+
+    /* ── 7b. Anti-windup — back-calculation on resonant integrators ──
+     *  When output saturates, pull each integrator back by SatErr before
+     *  storing as the next-cycle state.  This limits resonant peak build-up
+     *  without requiring a separate Kaw tuning parameter.
+     */
+    pr->yk  += pr->SatErr;   /* fundamental  integrator */
+    pr->yk3 += pr->SatErr;   /* 3rd harmonic integrator */
+    pr->yk5 += pr->SatErr;   /* 5th harmonic integrator */
 
     /* ── 8. Shift state registers ── */
     pr->err_old  = pr->Err;
