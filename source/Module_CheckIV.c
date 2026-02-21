@@ -37,7 +37,7 @@
 //2013-12-23 : Add Lowpass Filters (cutoff 2.5kHz) into IV_Read_reg.PU_IU,IV_Read_reg.PU_IV and IV_Read_reg.PU_IW (No Active).
 
 #include "F28x_Project.h"
-#include "ND2.h"
+#include "include\ND2.h"
 #include "f28004x_sw_prioritized_isr_levels.h"
 
 struct IV_READ_REG IV_Read_reg = {0,0,0,0,0,

@@ -33,7 +33,7 @@
 //2013-10-19 : UTO = 1ms
 
 #include "F28x_Project.h"
-#include "ND2.h"
+#include "include\ND2.h"
 #include "f28004x_sw_prioritized_isr_levels.h"
 
 struct QEP_REG QEP_Reg = {0,0,0,0,0,
@@ -97,7 +97,7 @@ Uint32 buff1=0;
 		{
 			EQep1Regs.QPOSMAX=buff1;//4095;
 			//Unit timeout			
-			buff = _IQ17div(_IQ17(1000),_IQ17(EQep1Regs.QPOSMAX));//_IQ17(500)=>µÑÇµÑé§=1/(QUPRD*10ns))
+			buff = _IQ17div(_IQ17(1000),_IQ17(EQep1Regs.QPOSMAX));//_IQ17(500)=>ï¿½ï¿½Çµï¿½ï¿½=1/(QUPRD*10ns))
 			QEP_Reg.TimeScaleUTO = _IQ17mpy(buff,_IQ17(60));	//Factor for Unit timeout calculation
 			//Capture			
 			buff2 = 1/((float32)EQep1Regs.QPOSMAX*0.00000128);//buff2 = 1/((float32)EQep1Regs.QPOSMAX*0.00000128);

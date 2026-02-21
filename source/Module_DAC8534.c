@@ -2,7 +2,7 @@
 //completed : d2a @100%
 //2012-5-31 : moved setup GPIO into main
 #include "F28x_Project.h"
-#include "ND2.h"
+#include "include\ND2.h"
 //see PID outout +1.5
 struct  DAC_SPI{
    long Data_high;

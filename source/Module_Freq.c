@@ -21,7 +21,7 @@
 //2013-11-12 : add check bit flying start will not operate
 
 #include "F28x_Project.h"
-#include "ND2.h"
+#include "include\ND2.h"
 #include "f28004x_sw_prioritized_isr_levels.h"
 
 struct Freq_REG Freq_Reg={0,0,0,0,0,

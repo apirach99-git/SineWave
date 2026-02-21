@@ -1,8 +1,8 @@
 #include "F28x_Project.h"
-#include "ND2.h"
+#include "include\ND2.h"
 #include "f28004x_sw_prioritized_isr_levels.h"
 
-#include "Module_LCD.h"
+#include "include\Module_LCD.h"
 
 #define Ts 0.001/10
 

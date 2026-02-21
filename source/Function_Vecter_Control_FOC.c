@@ -1,6 +1,6 @@
 #include "F28x_Project.h"
-#include "ND2.h"
-#include "pid_reg3.h"
+#include "include\ND2.h"
+#include "include\pid_reg3.h"
 
 /*----------------Description---------------------------
 10-20-55 : Vecter FOC Full Option

@@ -1,5 +1,5 @@
 #include "F28x_Project.h"
-#include "ND2.h"
+#include "include\ND2.h"
 #include <math.h>
 
 struct LIFT_REG Lift_Reg	={0,0,0,0}; 

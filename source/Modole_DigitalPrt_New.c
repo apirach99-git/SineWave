@@ -1,7 +1,7 @@
 /*
  * Modole_DigitalPrt_New.c
  *
- *  Created on: 16 ат.б. 2568
+ *  Created on: 16 О©╫О©╫.О©╫. 2568
  *      Author: Piyasak
  */
 
@@ -54,7 +54,7 @@
 //2013-7-19 : Debug DOUT LU no active when stop
 
 #include "F28x_Project.h"
-#include "ND2.h"
+#include "include\ND2.h"
 #include "f28004x_sw_prioritized_isr_levels.h"
 
 //Display table data

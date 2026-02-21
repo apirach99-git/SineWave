@@ -7,9 +7,9 @@
  */
 // Test Push to GitHub
 #include "F28x_Project.h"
-#include "DSP280x_I2C_defines.h"
-#include "ND2.h"
-#include "VariableDSP2808_Aui.h"
+#include "include\DSP280x_I2C_defines.h"
+#include "include\ND2.h"
+#include "include\VariableDSP2808_Aui.h"
 
 struct MAIN_VARIABLE MainIQ_Variable={0,0,0,0,0,0,0,0,0,0,
        0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};

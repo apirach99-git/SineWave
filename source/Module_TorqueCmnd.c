@@ -4,7 +4,7 @@
 //2013-11-12 : debug->the system restart with ACC by move set UpdateCmd wothout state check
 
 #include "F28x_Project.h"
-#include "ND2.h"
+#include "include\ND2.h"
 
 struct TRQCMND_REG TrqCmnd_Reg={0,0,0,0,0,
 								0}; 

@@ -4,7 +4,7 @@
 //2012-5-31 : moved setup GPIO into main
 //2012-10-31 : remove check sc
 #include "F28x_Project.h"
-#include "ND2.h"
+#include "include\ND2.h"
 #include "f28004x_sw_prioritized_isr_levels.h"
 ////////////////////////////////////////////////////////////////////////////////
 void SCFault_Setup(void)

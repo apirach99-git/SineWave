@@ -1,6 +1,6 @@
 //2013-5-14 : remove hysteresys
 #include "F28x_Project.h"
-#include "ND2.h"
+#include "include\ND2.h"
 
 void DynamicBreak(void);
 void OFF_R_Break(void);

@@ -5,7 +5,7 @@
 //2013-5-10 : use loop 5k
 //2013-5-14 : completed bootstrap
 #include "F28x_Project.h"
-#include "ND2.h"
+#include "include\ND2.h" 
 
 struct BOOTSTRAP_REG BtStrp_reg={0,0,0};
 //---External variable import--------------------------------------

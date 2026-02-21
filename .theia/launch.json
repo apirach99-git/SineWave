@@ -1,0 +1,58 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "SineWave",
+            "type": "ccs-debug",
+            "request": "launch",
+            "projectInfo": {
+                "name": "SineWave",
+                "resourceId": "/SineWave/__ccs_3_compilerIncludes"
+            },
+            "connections": [
+                {
+                    "name": "Texas Instruments XDS110 USB Debug Probe_0",
+                    "cores": [
+                        {
+                            "name": "C28xx_CPU1",
+                            "debuggerSettings": {
+                                "data": "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\" ?>\n<PropertyValues/>\n"
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "name": "SineWave (1)",
+            "type": "ccs-debug",
+            "request": "launch",
+            "projectInfo": {
+                "name": "SineWave",
+                "resourceId": "/SineWave"
+            }
+        },
+        {
+            "name": "SineWave (2)",
+            "type": "ccs-debug",
+            "request": "launch",
+            "projectInfo": {
+                "name": "SineWave",
+                "resourceId": "/SineWave/__ccs_2_generatedBinaries"
+            },
+            "connections": [
+                {
+                    "name": "Texas Instruments XDS110 USB Debug Probe_0",
+                    "cores": [
+                        {
+                            "name": "C28xx_CPU1",
+                            "debuggerSettings": {
+                                "data": "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\" ?>\n<PropertyValues>\n\n  <property id=\"Z1B0CSMPSWD3\">\n    <curValue>22112211</curValue>\n  </property>\n\n  <property id=\"Z1B0CSMPSWD2\">\n    <curValue>25876569</curValue>\n  </property>\n\n  <property id=\"Z1B0CSMPSWD1\">\n    <curValue>47ffffff</curValue>\n  </property>\n\n  <property id=\"Z1B0CSMPSWD0\">\n    <curValue>22711119</curValue>\n  </property>\n\n</PropertyValues>\n"
+                            }
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}

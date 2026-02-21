@@ -162,9 +162,9 @@
 
 #include "F28x_Project.h"
 #include <math.h>
-#include "ND2.h"
-#include "DSP280x_I2C_defines.h"
-#include "KeyPad.h"				//header for "const" variable
+#include "include\ND2.h"
+#include "include\DSP280x_I2C_defines.h"
+#include "include\KeyPad.h"				//header for "const" variable
 #include "f28004x_sw_prioritized_isr_levels.h"
 
 struct KEYPAD_REG KeyPad_reg={0,0,0,0,0,
@@ -3793,6 +3793,10 @@ void interrupt_timer(void)  //1ms
     {
         cnt = 0;
         lcd_refresh_req = true;  // ����� main � refresh LCD
+        if(GpioDataRegs.GPBDAT.bit.GPIO34)
+        GpioDataRegs.GPBCLEAR.bit.GPIO34 = 1;
+        else
+        GpioDataRegs.GPBSET.bit.GPIO34 = 1;
 
     }
 

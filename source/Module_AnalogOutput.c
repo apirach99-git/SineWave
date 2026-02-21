@@ -25,7 +25,7 @@
 //2023-3-2: DACA and DACB have been used to generate the signal for the FMA function
 
 #include "F28x_Project.h"
-#include "ND2.h"
+#include "include\ND2.h"
 
 struct AOUT_REG AOUT_Reg = {0,0,0,0,0,
 							0,0,0,0,0,

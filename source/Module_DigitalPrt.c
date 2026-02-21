@@ -44,7 +44,7 @@
 //2013-7-19 : Debug DOUT LU no active when stop
 
 #include "F28x_Project.h"
-#include "ND2.h"
+#include "include\ND2.h"
 #include "f28004x_sw_prioritized_isr_levels.h"
 
 struct DGTLPRT_REG DgtlPrt_Reg={0,0,0,0,0};

@@ -92,7 +92,7 @@
 //2013-10-19 : debug check bit data fault(no fault,LU) before check fault LU
 
 #include "F28x_Project.h"
-#include "ND2.h"
+#include "include\ND2.h"
 #include "f28004x_sw_prioritized_isr_levels.h"
 
 struct CHKFAULT_REG ChkFault_Reg ={0,0,0,0,0,

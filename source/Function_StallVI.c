@@ -13,7 +13,7 @@
 //2013-7-2 : revise add iq17 function with iq format
 
 #include "F28x_Project.h"
-#include "ND2.h"
+#include "include\ND2.h"
 
 struct data_grp{
 	Uint16 value[100];

@@ -24,7 +24,7 @@
 //2013-7-24 : revise status circuit disable/normal/short/open
 
 #include "F28x_Project.h"
-#include "ND2.h"
+#include "include\ND2.h"
 #include "f28004x_sw_prioritized_isr_levels.h"
 
 struct TEMPERATURE_REG Temperature_reg = {0,0,0};//start A2D temp@25^C

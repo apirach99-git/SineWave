@@ -6,7 +6,7 @@
 //2012-10-16 : revised LPF to A2D data
 
 #include "F28x_Project.h"
-#include "ND2.h"
+#include "include\ND2.h"
 #include "f28004x_sw_prioritized_isr_levels.h"
 
 struct VDC_READ_REG VDC_Read_reg = {0,0,0,0,0,

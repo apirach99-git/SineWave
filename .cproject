@@ -44,7 +44,6 @@
                                 <option id="com.ti.ccstudio.buildDefinitions.C2000_22.6.compilerID.FP_MODE.2115630753" superClass="com.ti.ccstudio.buildDefinitions.C2000_22.6.compilerID.FP_MODE" value="com.ti.ccstudio.buildDefinitions.C2000_22.6.compilerID.FP_MODE.relaxed" valueType="enumerated"/>
                                 <option id="com.ti.ccstudio.buildDefinitions.C2000_22.6.compilerID.INCLUDE_PATH.2100348361" superClass="com.ti.ccstudio.buildDefinitions.C2000_22.6.compilerID.INCLUDE_PATH" valueType="includePath">
                                     <listOptionValue value="${PROJECT_ROOT}"/>
-                                    <listOptionValue value="E:\OneDrive\1\Workspace_Sinewave\ND2Pretest_File system\SystemFilesND2\header"/>
                                     <listOptionValue value="E:\OneDrive\1\Workspace_Sinewave\ND2Pretest_File system\common\include"/>
                                     <listOptionValue value="E:\OneDrive\1\Workspace_Sinewave\ND2Pretest_File system\driverlib"/>
                                     <listOptionValue value="E:\OneDrive\1\Workspace_Sinewave\ND2Pretest_File system\driverlib\inc"/>

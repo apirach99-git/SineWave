@@ -5,7 +5,7 @@
 //2013-4-18 : remove unnecessary scalling I and add cheking bit"OffsetA2DI" before cal. I phase
 
 #include "F28x_Project.h"
-#include "ND2.h"
+#include "include\ND2.h"
 
 
 

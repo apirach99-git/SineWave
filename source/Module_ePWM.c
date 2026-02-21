@@ -39,7 +39,7 @@
 
 
 #include "F28x_Project.h"     // DSP280x Headerfile Include File
-#include "ND2.h"
+#include "include\ND2.h"
 
 
 
@@ -632,10 +632,10 @@ void HPWM(void)
 //   va_com = (Period_PWM>>1) + _IQ1div(_IQ1mpy(Period_PWM,va),Vdcbus);//Vdc = 350 Vrms = 2867 Q12
 //   vc_com = (Period_PWM>>1) + _IQ1div(_IQ1mpy(Period_PWM,vc),Vdcbus);
 
-   float Period_PWM_f   = (float)Period_PWM;   // ¤èÒ period à»ç¹ float
-   float vc_f                   = (float)vc;            // ¤èÒ sine reference
-   float va_f                   = (float)va;            // ¤èÒ sine reference
-   float Vdcbus_f           = (float)Vdcbus;        // ¤èÒ Vdc bus ·ÕèÊà¡ÅáÅéÇ
+   float Period_PWM_f   = (float)Period_PWM;   // ï¿½ï¿½ï¿½ period ï¿½ï¿½ float
+   float vc_f                   = (float)vc;            // ï¿½ï¿½ï¿½ sine reference
+   float va_f                   = (float)va;            // ï¿½ï¿½ï¿½ sine reference
+   float Vdcbus_f           = (float)Vdcbus;        // ï¿½ï¿½ï¿½ Vdc bus ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 
    va_com_f = (Period_PWM_f * 0.5f) + (Period_PWM_f * va_f) / Vdcbus_f;
    vc_com_f = (Period_PWM_f * 0.5f) + (Period_PWM_f * vc_f) / Vdcbus_f;

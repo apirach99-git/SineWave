@@ -7,7 +7,7 @@
 
 
 #include "F28x_Project.h"
-#include "ND2.h"
+#include "include\ND2.h"
 
 int First_Test_ND2 = 0;//1 = First Test, 0 = Real Test
 
@@ -220,7 +220,7 @@ Frist test :
     GPIO_setPadConfig(34, GPIO_PIN_TYPE_PULLUP);    // Enable pullup on GPIO34
     GPIO_setPinConfig(GPIO_34_GPIO34);              // GPIO34 = GPIO34
     GPIO_setDirectionMode(34, GPIO_DIR_MODE_IN);   // GPIO34 = input
-
+ //   GPIO_setDirectionMode(34, GPIO_DIR_MODE_OUT);    
     GPIO_setPadConfig(58, GPIO_PIN_TYPE_PULLUP);    // Enable pullup on GPIO58
     GPIO_setPinConfig(GPIO_58_GPIO58);              // GPIO58 = GPIO58
     GPIO_setDirectionMode(58, GPIO_DIR_MODE_IN);   // GPIO58 = input

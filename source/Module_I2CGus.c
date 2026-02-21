@@ -10,8 +10,8 @@
  */
 
 #include "F28x_Project.h"
-#include "DSP280x_I2C_defines.h"
-#include "ND2.h"
+#include "include\DSP280x_I2C_defines.h"
+#include "include\ND2.h"
 #include "f28004x_sw_prioritized_isr_levels.h"
 
 //Uint16 intSource;

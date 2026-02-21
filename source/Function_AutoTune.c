@@ -2,7 +2,7 @@
 //2013-7-27 : debug reset autotune(clearing Vq) 
 
 #include "F28x_Project.h"
-#include "ND2.h"  
+#include "include\ND2.h"
 #include <math.h>
 
 //2013-6-24 : add state start/stop auto tune

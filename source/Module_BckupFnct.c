@@ -4,8 +4,8 @@
 //2013-4-1 : no reset bit Syst_ready when up/dnload
 
 #include "F28x_Project.h"
-#include "DSP280x_I2C_defines.h"
-#include "ND2.h"
+#include "include\DSP280x_I2C_defines.h"
+#include "include\ND2.h"
 
 struct BCKUP_REG Bckup_reg = {0,0,0,0,0,0};
 extern Uint16 *PntrDataE2Prom;
