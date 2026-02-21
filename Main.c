@@ -35,7 +35,8 @@ uint16_t test1,ZRequest;
 float test;
 extern RMSCalc_t Vrms_In;
 extern RMSCalc_t Vrms_Out;
-
+extern RMSCalc_t Vrms_In;
+extern RMSCalc_t Irms_Out;
 
 
 void main(void)
@@ -112,7 +113,7 @@ void main(void)
     test = 0;
     RMS_Init(&Vrms_In,  200);
     RMS_Init(&Vrms_Out, 200);
-
+    RMS_Init(&Irms_Out, 200);
     for(;;)
     {
         ServiceDog();
