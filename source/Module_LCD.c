@@ -264,8 +264,8 @@ static void LCD_Update_Output_Zone_Data(void)
     segWrite(&LCDo_OUTPUT, 1);
     // Update Output Zone (Digit 6-8)
     // Example: Show Output Voltage (Vrms_Out)
-    //LCD_ShowOutput3(Vrms_Out.rms); // remove cast to int16_t
-    LCD_ShowOutput3(Irms_Out.rms);
+    LCD_ShowOutput3(Vrms_Out.rms); // remove cast to int16_t
+    //LCD_ShowOutput3(Irms_Out.rms);
     segWrite(&LCDo_V, 1); // Turn on 'V' icon
 }
 

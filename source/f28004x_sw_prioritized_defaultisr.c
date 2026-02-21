@@ -143,6 +143,8 @@ __interrupt void EPWM6_ISR(void)
 
     ReadVDC();                      //read VDCbus(A2D A3)
 
+    ReadIV();
+    
     Motor_Drive();
     EPwm6Regs.ETCLR.bit.INT = 1;//Clear Flag
 

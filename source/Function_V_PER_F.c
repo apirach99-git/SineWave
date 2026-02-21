@@ -359,18 +359,19 @@ void V_PER_F(void)
         Vs_alpha = (int16_t)(Vs_alpha_fp* 4096.0f);  // Q12
         Vs_beta  = (int16_t)(Vs_beta_fp  * 4096.0f);  // Q12
 
-   PR_Reg_IQ.Ref = _IQ12mpy(2920,Vs_alpha);
-   PR_Reg_IQ.Ref = PR_Reg_IQ.Ref<<5;
-   PR_Reg_IQ.Fdb = IV_Read_reg.PU_VO>>2;
+   // PR Controller — Floating Point
+   // Ref: Vs_alpha normalised to ±1.0  (Q12 → float: /4096)
+   PR_Reg.Ref = Vs_alpha_fp;               // sine reference  ±1.0 p.u.
+   PR_Reg.Fdb = _IQ17toF(IV_Read_reg.PU_VO) * 0.35f;  // output voltage feedback (float)
 
-   if(ND2System_Reg.STATE_FLAG.bit.State != state_stop)//OFF PWM setting
+   if(ND2System_Reg.STATE_FLAG.bit.State != state_stop) // Run only when not stopped
    {
-       CalPRControl();
+       PR_Update(&PR_Reg);                 // execute one PR step (float)
    }
 
-
-   va = PR_Reg_IQ.Out>>4;
- //  va = _IQ12mpy(3000,Vs_alpha);
+   // PR_Reg.Out is modulation index ±0.975 → feed to SPWM
+   // For 3-phase mode: map to va/vc (Q12 range ≈ ±4096)
+   va = (int16_t)(PR_Reg.Out * 4096.0f);
    vc = -va;
 
 /*Average  power calculation by using Alpha-Beta transformation method
