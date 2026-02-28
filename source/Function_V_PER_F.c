@@ -390,9 +390,9 @@ void V_PER_F(void)
 */
  /*
    Po_total = _IQtoF(_IQmpy(_IQmpy(IV_Read_reg.Isd,
-                    MainIQ_Variable.I_base), IV_Read_reg.Vout_Rms))*1000;
+                    MainIQ_Variable.I_base), (_iq)(IV_Read_reg.Vout_Rms * 131072.0f)))*1000;
    Qo_total = _IQtoF(_IQmpy(_IQmpy(IV_Read_reg.Isq,
-                    MainIQ_Variable.I_base), IV_Read_reg.Vout_Rms))*1000;
+                    MainIQ_Variable.I_base), (_iq)(IV_Read_reg.Vout_Rms * 131072.0f)))*1000;
 */
 /*
   Po_total  = _IQtoF(_IQmpy(IV_Read_reg.Filtered_P, MainIQ_Variable.I_base))*1000;
@@ -400,7 +400,7 @@ void V_PER_F(void)
   So_total  = _IQtoF(_IQmpy(IV_Read_reg.S, MainIQ_Variable.I_base))*1000;
   PF = Po_total/So_total;
 
-   Vline_rms = _IQtoF(IV_Read_reg.Vout_Rms)*1000;
+   Vline_rms = IV_Read_reg.Vout_Rms * 1000.0f;
 */
    //Po_Filtered = LowPassFilter(Po_total, Po_Filtered, _IQ17(5), _IQ17(1));
 

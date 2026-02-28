@@ -217,12 +217,12 @@ _iq buff_aout = 0;
 	{		
 		case 1://Aout => I
 			buff_aout = _IQ17div(MainIQ_Variable.I_Rate,MainIQ_Variable.IRef);
-			buff_aout = _IQ17mpy(buff_aout,IV_Read_reg.I_Peak);
+			buff_aout = _IQ17mpy(buff_aout,(_iq)(IV_Read_reg.I_Peak * 131072.0f));
 			break;
 		//-------------------------------
 		case 2://Aout => V		
 			buff_aout = _IQ17div(MainIQ_Variable.V_base,MainIQ_Variable.VRef);
-			buff_aout = _IQ17mpy(buff_aout,IV_Read_reg.Vout_Rms);
+			buff_aout = _IQ17mpy(buff_aout,(_iq)(IV_Read_reg.Vout_Rms * 131072.0f));
 			break;
 		//-------------------------------
 		case 3://Aout => VDC

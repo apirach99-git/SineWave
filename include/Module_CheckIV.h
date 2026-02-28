@@ -27,16 +27,16 @@ struct IV_READ_REG{
 	union IVFlag			IV_FLAG;
 	_iq						I_Alpha;
 	_iq						I_Beta;
-	_iq						I_Peak;			//I peak PU
-	_iq						I_rms;			//Irms PU
+	float						I_Peak;			//I peak PU
+	float						I_rms;			//Irms PU
 	_iq						PU_IU;			//per unit line U
 	_iq						PU_IV;			//per unit line V
 	_iq						PU_IW;			//per unit line W
     _iq                     PU_VO;          //per unit Vout
     _iq                     PU_VI;          //per unit Vout
     float                     PU_VI_last;
-	_iq						Vout_Rms;		//V output rms
-	_iq                     Vin_Rms;       //V output rms
+	float						Vout_Rms;		//V output rms
+	float                     Vin_Rms;       //V output rms
 	Uint32					BuffA2DA0;		//buffer A2D A0 before average
 	Uint32					BuffA2DA1;		//buffer A2D A1 before average
 	Uint32					BuffA2DA2;		//buffer A2D A2 before average

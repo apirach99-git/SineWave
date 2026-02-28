@@ -415,7 +415,7 @@ void Find_RotorTimeConstant(void)
         Min = _IQ17div(_IQ17(-40),MainIQ_Variable.V_base);
 
 
-        Err = AutoTuneCtrlRegs.Isref - IV_Read_reg.I_rms;//Q17
+        Err = AutoTuneCtrlRegs.Isref - Isrms;//Q17
         intregrate = AutoTuneCtrlRegs.IntregratePI_Is;
         PI_Antiwindup();
         AutoTuneCtrlRegs.IntregratePI_Is = intregrate;

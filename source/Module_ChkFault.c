@@ -837,7 +837,7 @@ void Clr_Fault(void)
         }
         else if(ChkFault_Reg.DATA_FAULT.bit.Fault_OC==1)
         {
-            //if(IV_Read_reg.I_Peak < _IQ17(1.95))
+            //if(IV_Read_reg.I_Peak < 1.95f) // _IQ17(1.95)
             if(ChkFault_Reg.I_Fault < _IQ17(1.95))
             {
                 ChkFault_Reg.FLAG_FAULT.bit.ClrSuccess = 1;
@@ -933,7 +933,7 @@ Uint16 bufffault=0;
                 goto FaultOC;
             }
         }
-        //else if(IV_Read_reg.BuffIp >= _IQ17(2.25)) //not use 2*1.414 because hardware saturated
+        //else if((_iq)(IV_Read_reg.BuffIp * 131072.0f) >= _IQ17(2.25)) //not use 2*1.414 because hardware saturated
         else if(ChkFault_Reg.I_Fault >= _IQ17(2.00)) //not use 2*1.414 because hardware saturated
         {
 FaultOC:

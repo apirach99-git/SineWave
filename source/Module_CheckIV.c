@@ -103,7 +103,7 @@ void CalVrms(void)
     float Vf_q = (float)Volt_Vq * 0.00000762939453125f; // Volt_Vq / 131072.0f
     float buff_cal = (Vf_d * Vf_d) + (Vf_q * Vf_q);
 
-	IV_Read_reg.Vout_Rms = (_iq)(sqrtf(buff_cal) * 131072.0f);
+	IV_Read_reg.Vout_Rms = sqrtf(buff_cal);
 } 
 ////////////////////////////////////////////////////////////////
 void CalIrms(void)
@@ -116,17 +116,17 @@ _iq buffout = IV_Read_reg.BuffIp;
 	}
 	if(buffout!=0)
 	{
-		IV_Read_reg.I_Peak = LowPassFilter(buffout,IV_Read_reg.I_Peak,Cons_I,IQ17_1);
+		IV_Read_reg.I_Peak = (float)LowPassFilter(buffout,(_iq)(IV_Read_reg.I_Peak * 131072.0f),Cons_I,IQ17_1) * 0.00000762939453125f;
 	}
 	else
 	{
-		IV_Read_reg.I_Peak = 0;
+		IV_Read_reg.I_Peak = 0.0f;
 	}
 
 	//Irms****
-	float I_Peak_f = (float)IV_Read_reg.I_Peak * 0.00000762939453125f;
+	float I_Peak_f = IV_Read_reg.I_Peak;
 	float Irms_f = I_Peak_f / 1.41421356237f; // Irms = Ip/sqrt(2)
-	IV_Read_reg.I_rms = (_iq)(Irms_f * 131072.0f);
+	IV_Read_reg.I_rms = Irms_f;
 
 }
 ////////////////////////////////////////////////////////////////
