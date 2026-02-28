@@ -33,9 +33,10 @@ uint8_t next_carry;
 uint8_t count1=1;
 uint16_t test1,ZRequest;
 float test;
-extern VrmsCalc_t Vrms_In;
-extern VrmsCalc_t Vrms_Out;
-
+extern RMSCalc_t Vrms_In;
+extern RMSCalc_t Vrms_Out;
+extern RMSCalc_t Vrms_In;
+extern RMSCalc_t Irms_Out;
 
 
 void main(void)
@@ -110,9 +111,9 @@ void main(void)
 
 
     test = 0;
-    Vrms_Init(&Vrms_In,  200);
-    Vrms_Init(&Vrms_Out, 200);
-
+    RMS_Init(&Vrms_In,  200);
+    RMS_Init(&Vrms_Out, 200);
+    RMS_Init(&Irms_Out, 200);
     for(;;)
     {
         ServiceDog();

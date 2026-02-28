@@ -203,13 +203,6 @@ static const LcdDigitMap* getDigitMap(uint8_t digit_id)
     }
 }
 
-static LcdZone digitToZone(uint8_t digit_id)
-{
-    if(digit_id >= 1 && digit_id <= 3) return LCD_ZONE_INPUT;
-    if(digit_id == 4 || digit_id == 5) return LCD_ZONE_CENTER;
-    return LCD_ZONE_OUTPUT;
-}
-
 /* =========================
  *  Low-level helpers
  * ========================= */

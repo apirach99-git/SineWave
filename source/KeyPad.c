@@ -1062,12 +1062,12 @@ void DisplayNormal(void)
 
         ar_buffdisp[0] = _IQ17abs(MainIQ_Variable.FCommand);
         //ar_buffdisp[0] = _IQ17abs(MainIQ_Variable.FSet);
-        ar_buffdisp[1] = IV_Read_reg.I_Peak; //default
+        ar_buffdisp[1] = (_iq)(IV_Read_reg.I_Peak * 131072.0f); //default
         //ar_buffdisp[1] = ChkFault_Reg.I_Fault;
         //ar_buffdisp[2] = VDC_Read_reg.VdcBus;
         ar_buffdisp[2] = VDC_Read_reg.VdcDisplay;
 
-        ar_buffdisp[3] = IV_Read_reg.Vout_Rms;
+        ar_buffdisp[3] = (_iq)(IV_Read_reg.Vout_Rms * 131072.0f);
         ar_buffdisp[4] = QEP_Reg.ABSRPM;
         ar_buffdisp[5] = _IQ17abs(TrqCmnd_Reg.TrqCommand);
         ar_buffdisp[6] = _IQ17abs(arTemperature[0]);

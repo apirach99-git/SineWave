@@ -1,104 +1,93 @@
-//added all chanel conversion
+/*
+ * Module_PR.h
+ * Proportional-Resonant (PR) Controller — Floating Point
+ *
+ * Controller structure (Tustin discrete-time, zero-pole matching):
+ *
+ *   y(k) = y(k-1) + Ki*e(k-1) + wts*v(k-1)
+ *   v(k) = v(k-1) - wts*y(k)
+ *   Out   = Kp*e(k) + y(k)         [fundamental]
+ *         + y3(k)                   [3rd harmonic, optional]
+ *         + y5(k)                   [5th harmonic, optional]
+ *
+ * where:
+ *   wts  = Ts * w0        (fundamental,  w0 = 2*PI*50)
+ *   wts3 = Ts * 3*w0      (3rd harmonic)
+ *   wts5 = Ts * 5*w0      (5th harmonic)
+ *   Ts   = 1 / Fsw        (switching period, e.g. 100us @ 10kHz)
+ *
+ * ND2 Project — TMS320F280049C
+ * Author: Piyasak Kranprakon (GUS)
+ */
+
 #ifndef MODULE_PRCONTROL_H
 #define MODULE_PRCONTROL_H
 
+#include <stdint.h>
+#include <math.h>
 
-//------------------------------------------------------------------------------------------------------------
-//!!!Do not change the order of structure F510-F520
-struct PR_REG {
-        float32_t Ref;
-        float32_t Fdb;
-        float32_t Err;
-        float32_t Kp;
-        float32_t Up;
-        float32_t OutPreSat;
-        float32_t OutMax;
-        float32_t OutMin;
-        float32_t Out;
-        float32_t SatErr;
+/*--------------------------------------------------------------------------
+ * PR_t  —  Proportional-Resonant Controller (pure float)
+ *--------------------------------------------------------------------------*/
+typedef struct
+{
+    /* ── Inputs ── */
+    float   Ref;            /* Voltage reference  (per-unit or volts)         */
+    float   Fdb;            /* Voltage feedback   (from ADC, same unit as Ref) */
 
-        float32_t Ki;
-        float32_t Kc;
-        float32_t wts;
-        float32_t err_old;
-        float32_t yk;
-        float32_t yk_old;
-        float32_t vk;
-        float32_t vk_old;
+    /* ── Gains ── */
+    float   Kp;             /* Proportional gain                               */
+    float   Ki;             /* Resonant gain (fundamental)                     */
+    float   Ki3;            /* Resonant gain (3rd harmonic)                    */
+    float   Ki5;            /* Resonant gain (5th harmonic)                    */
 
-        float32_t Ki3;
-        float32_t wts3;
-        float32_t yk3;
-        float32_t yk_old3;
-        float32_t vk3;
-        float32_t vk_old3;
+    float   wts;            /* Ts * w0        (fundamental)                   */
+    float   wts3;           /* Ts * 3*w0      (3rd harmonic)                  */
+    float   wts5;           /* Ts * 5*w0      (5th harmonic)                  */
 
-        float32_t Ki5;
-        float32_t wts5;
-        float32_t yk5;
-        float32_t yk_old5;
-        float32_t vk5;
-        float32_t vk_old5;
-}; 
-extern struct PR_REG PR_Reg; 
+    /* ── Output limits ── */
+    float   OutMax;         /* Upper saturation limit  (e.g.  0.975)          */
+    float   OutMin;         /* Lower saturation limit  (e.g. -0.975)          */
 
-struct PR_REG_IQ {
-        _iq Ref;
-        _iq Fdb;
-        _iq Err;
-        _iq Kp;
-        _iq Up;
-        long   OutPreSat;
-        _iq OutMax;
-        _iq OutMin;
-        _iq Out;
-        _iq SatErr;
+    /* ── Internal states — fundamental ── */
+    float   Err;            /* Current error   = Ref - Fdb                    */
+    float   err_old;        /* Previous error                                 */
+    float   yk;             /* Resonant integrator output (k)                 */
+    float   yk_old;         /* Resonant integrator output (k-1)               */
+    float   vk;             /* Resonant quadrature state  (k)                 */
+    float   vk_old;         /* Resonant quadrature state  (k-1)               */
 
-        _iq Ki;
-        _iq Kc;
-        _iq wts;
-        _iq err_old;
-        _iq yk;
-        _iq yk_old;
-        _iq vk;
-        _iq vk_old;
+    /* ── Internal states — 3rd harmonic ── */
+    float   yk3;
+    float   yk_old3;
+    float   vk3;
+    float   vk_old3;
 
-        _iq Ki3;
-        _iq wts3;
-        _iq yk3;
-        _iq yk_old3;
-        _iq vk3;
-        _iq vk_old3;
+    /* ── Internal states — 5th harmonic ── */
+    float   yk5;
+    float   yk_old5;
+    float   vk5;
+    float   vk_old5;
 
-        _iq Ki5;
-        _iq wts5;
-        _iq yk5;
-        _iq yk_old5;
-        _iq vk5;
-        _iq vk_old5;
-};
-extern struct PR_REG_IQ PR_Reg_IQ;
+    /* ── Outputs ── */
+    float   Up;             /* Proportional term output                       */
+    float   OutPreSat;      /* Output before saturation                       */
+    float   Out;            /* Final saturated output                         */
+    float   SatErr;         /* Saturation error  (Out - OutPreSat)            */
 
-#endif  
+} PR_t;
 
-//===========================================================================
-// End of file.
-//===========================================================================
+/* Global PR controller instance */
+extern PR_t PR_Reg;
 
+/* ── Public API ── */
+void PR_Init(PR_t *pr, float Kp, float Ki, float Ki3, float Ki5,
+             float w0, float Ts, float OutMax);
+void PR_Reset(PR_t *pr);
+void PR_Update(PR_t *pr);   /* Call in ISR every Ts */
 
+#endif  /* MODULE_PRCONTROL_H */
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+/*===========================================================================
+ * End of file.
+ *===========================================================================*/

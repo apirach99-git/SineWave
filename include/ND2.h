@@ -21,7 +21,6 @@
 #include "Module_CheckVDC.h"			//read A2D VDC bus
 #include "Module_Freq.h"				//Group3(freq.) manager
 #include "Module_FlyStrt.h"	
-#include "Module_FlyStrt.h"	
 #include "Module_BckupFnct.h"	//function backup setting of function
 #include "Function_BootStrap.h"	
 #include "Module_Lift.h"

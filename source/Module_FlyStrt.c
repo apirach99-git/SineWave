@@ -101,7 +101,7 @@ _iq buff = 0,buffVtarget=0,buffvref=0;
 		{
 			if(FlyStrt_Reg.TDelayVout >= TdelayVout)
 			{				
-				FlyStrt_Reg.IFly_K_1 = IV_Read_reg.I_Peak;
+				FlyStrt_Reg.IFly_K_1 = (_iq)(IV_Read_reg.I_Peak * 131072.0f);
 				FlyStrt_Reg.FFly_K_1 = MainIQ_Variable.FCommandA;
 				MainIQ_Variable.FCommandA = _IQ17(Decel(_IQ17toF(MainIQ_Variable.FCommandA),0,
 												  _IQ17toF(FlyStrt_Reg.TDecelSearch),
@@ -117,22 +117,22 @@ _iq buff = 0,buffVtarget=0,buffvref=0;
 		{
 			if(MainIQ_Variable.FCommandA==0)
 			{
-				FlyStrt_Reg.IFly_K_1 = IV_Read_reg.I_Peak;
+				FlyStrt_Reg.IFly_K_1 = (_iq)(IV_Read_reg.I_Peak * 131072.0f);
 				FlyStrt_Reg.FFly_K_1 = MainIQ_Variable.FCommandA;
 				goto upstg4;			
 			}else if(FlyStrt_Reg.Flag_FlyStrt.bit.IDecrease == 0)			
 			{				
-				if(IV_Read_reg.I_Peak>FlyStrt_Reg.IFly_K_1)
+				if((_iq)(IV_Read_reg.I_Peak * 131072.0f)>FlyStrt_Reg.IFly_K_1)
 				{
-					if(IV_Read_reg.I_Peak-FlyStrt_Reg.IFly_K_1>=cutI)
+					if((_iq)(IV_Read_reg.I_Peak * 131072.0f)-FlyStrt_Reg.IFly_K_1>=cutI)
 					{
-						FlyStrt_Reg.IFly_K_1=IV_Read_reg.I_Peak;	
+						FlyStrt_Reg.IFly_K_1=(_iq)(IV_Read_reg.I_Peak * 131072.0f);	
 					}					
 					DecFFly(_IQ17abs(buff));					
-				}else if((FlyStrt_Reg.IFly_K_1-IV_Read_reg.I_Peak)>=cutI)
+				}else if((FlyStrt_Reg.IFly_K_1-(_iq)(IV_Read_reg.I_Peak * 131072.0f))>=cutI)
 				{						
 					FlyStrt_Reg.Flag_FlyStrt.bit.IDecrease = 1;								
-					FlyStrt_Reg.IFly_K_1 = IV_Read_reg.I_Peak;
+					FlyStrt_Reg.IFly_K_1 = (_iq)(IV_Read_reg.I_Peak * 131072.0f);
 					FlyStrt_Reg.FFly_K_1 = MainIQ_Variable.FCommandA;
 				}else
 				{			
@@ -140,10 +140,10 @@ _iq buff = 0,buffVtarget=0,buffvref=0;
 				}
 			}else
 			{
-				if(IV_Read_reg.I_Peak<FlyStrt_Reg.IFly_K_1)
+				if((_iq)(IV_Read_reg.I_Peak * 131072.0f)<FlyStrt_Reg.IFly_K_1)
 				{
 					DecFFly(_IQ17abs(buff));
-				}else if(IV_Read_reg.I_Peak-FlyStrt_Reg.IFly_K_1>=cutI1)
+				}else if((_iq)(IV_Read_reg.I_Peak * 131072.0f)-FlyStrt_Reg.IFly_K_1>=cutI1)
 				{	
 upstg4:				FlyStrt_Reg.Flag_FlyStrt.bit.FlyStage = 4;
 					buffvref = buffVtarget-FlyStrt_Reg.VOutputSearch;						

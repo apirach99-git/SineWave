@@ -116,27 +116,13 @@ extern int Vmax,Vmin;
 void Motor_Drive(void)
 {
 //GpioDataRegs.GPACLEAR.bit.GPIO19 = 1;
-  	if(ND2System_Reg.STATE_FLAG.bit.State == state_stop)
-	{ 
-		softstart = 0;//For Vector
-	}  
 
-    	ReadIV();
+    //	ReadIV();
 
     if(grp_num[5].value[0] <= 3 && ND2System_Reg.FLAG_SYST_CTRL.bit.Syst_ready==1)//F501   
 	{
 		V_PER_F();
 	}
-/*	if(grp_num[7].value[0] == 1)//F701
-	{ 
-		RsIbasePerVbase = 1460;
-	   	SigmaLsOmegabaseIbasePerVbase = 2261;
-	   	LsOmegabaseIbasePerVbase = 27073;
-
-		Speed_vector_Com = F_Command>>1;
- 		Vecter_Control_Decoupling(); 
-	}*/
-
 
 	Function_BtStrp();
  	Run_ePWM();

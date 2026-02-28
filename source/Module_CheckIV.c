@@ -99,10 +99,11 @@ void ReadIVRMS(void)
 ////////////////////////////////////////////////////////////////
 void CalVrms(void)
 {
-_iq buff_cal=0;
+    float Vf_d = (float)Volt_Vd * 0.00000762939453125f; // Volt_Vd / 131072.0f
+    float Vf_q = (float)Volt_Vq * 0.00000762939453125f; // Volt_Vq / 131072.0f
+    float buff_cal = (Vf_d * Vf_d) + (Vf_q * Vf_q);
 
-	buff_cal = _IQ17mpy(Volt_Vd,Volt_Vd) + _IQ17mpy(Volt_Vq,Volt_Vq);
-	IV_Read_reg.Vout_Rms = _IQ17sqrt(buff_cal);
+	IV_Read_reg.Vout_Rms = sqrtf(buff_cal);
 } 
 ////////////////////////////////////////////////////////////////
 void CalIrms(void)
@@ -115,15 +116,17 @@ _iq buffout = IV_Read_reg.BuffIp;
 	}
 	if(buffout!=0)
 	{
-		IV_Read_reg.I_Peak = LowPassFilter(buffout,IV_Read_reg.I_Peak,Cons_I,IQ17_1);
+		IV_Read_reg.I_Peak = (float)LowPassFilter(buffout,(_iq)(IV_Read_reg.I_Peak * 131072.0f),Cons_I,IQ17_1) * 0.00000762939453125f;
 	}
 	else
 	{
-		IV_Read_reg.I_Peak = 0;
+		IV_Read_reg.I_Peak = 0.0f;
 	}
 
 	//Irms****
-	IV_Read_reg.I_rms = _IQ17div(IV_Read_reg.I_Peak,SQRT2);//Irms = Ip/sqrt(2)
+	float I_Peak_f = IV_Read_reg.I_Peak;
+	float Irms_f = I_Peak_f / 1.41421356237f; // Irms = Ip/sqrt(2)
+	IV_Read_reg.I_rms = Irms_f;
 
 }
 ////////////////////////////////////////////////////////////////
@@ -133,7 +136,7 @@ void ReadIV(void)
 _iq buff_long  = 0;
 
 Uint16 buffA0 = arA2dBuff[A2dA0Buff];
-//Uint16 buffA1 = arA2dBuff[A2dA1Buff];
+Uint16 buffA1 = arA2dBuff[A2dA1Buff];
 //Uint16 buffA2 = arA2dBuff[A2dA2Buff];
 Uint16 buffA7 = arA2dBuff[A2dA7Buff];
 Uint16 buffA4 = arA2dBuff[A2dA4Buff];
@@ -143,26 +146,20 @@ Uint16 buffA4 = arA2dBuff[A2dA4Buff];
 		if(IV_Read_reg.IV_FLAG.bit.OffsetA2DI==1)
 		{
 
-        //    buff_long = IPhase(buffA7, IV_Read_reg.CenterVo);
-		//    buff_long = IPhasePok(buffA7, 1859);
-		//    IV_Read_reg.CenterVo=1859;
-		//    buff_long = IPhasePok(buffAx, IV_Read_reg.CenterVo);
-	  //    buffAy = buff_long;
-		    buff_long = IPhasePok(buffA7, IV_Read_reg.CenterVo);
+		    buff_long = (_iq)(IPhasePok(buffA7, IV_Read_reg.CenterVo) * 131072.0f);
             IV_Read_reg.PU_VO = LowPassFilter(buff_long, IV_Read_reg.PU_VO, 0, IQ17_1);
 
 
-           buff_long = IPhasePok(buffA4, IV_Read_reg.CenterVo);
+           buff_long = (_iq)(IPhasePok(buffA4, IV_Read_reg.CenterVo) * 131072.0f);
     //       buff_long = IPhase(buffA4, 1859);
             IV_Read_reg.PU_VI = LowPassFilter(buff_long, IV_Read_reg.PU_VI, 0, IQ17_1);
 
-		 //   IV_Read_reg.PU_VO =   buff_long;
-		 //   IV_Read_reg.PU_VO = _IQ17mpy(_IQ17(1),buff_long);
-			//Phase U
-			//IV_Read_reg.PU_IU = IPhase(buffA0,IV_Read_reg.CenterIu);
-		    buff_long = IPhasePok(buffA0, IV_Read_reg.CenterIu);
+			buff_long = (_iq)(IPhasePok(buffA0, IV_Read_reg.CenterIu) * 131072.0f);
 			IV_Read_reg.PU_IU = LowPassFilter(buff_long, IV_Read_reg.PU_IU, 0, IQ17_1);
 
+			//buff_long = (_iq)(IPhasePok(buffA1, IV_Read_reg.CenterIw) * 131072.0f);
+			//IV_Read_reg.PU_IV = LowPassFilter(buff_long, IV_Read_reg.PU_IV, 0, IQ17_1);
+			IV_Read_reg.PU_IV = buff_long;
             if((SinTheta_fp>=0)&&(IV_Read_reg.PU_VI_last<0))
                 {
                         if(IV_Read_reg.PU_VI>0)CountFreqIn = _IQ17(-0.002);
@@ -172,47 +169,7 @@ Uint16 buffA4 = arA2dBuff[A2dA4Buff];
 
 		//buff_long = IPhasePok(buffA0,IV_Read_reg.CenterIu);
 		//IV_Read_reg.PU_IU = _IQ17mpy(43691,buff_long)+_IQ17mpy(87381,IV_Read_reg.PU_IU);//cutoff 2.5kHz
-
-			if(grp_num[0].value[11]==0)//check model small or large mainboard
-			{
-				//in the case of small main
-				//Phase W
-				//IV_Read_reg.PU_IW = IPhase(buffA1,IV_Read_reg.CenterIw);
-//			    buff_long = IPhase(buffA1, IV_Read_reg.CenterIw);
-//				IV_Read_reg.PU_IW = LowPassFilter(buff_long, IV_Read_reg.PU_IW, Cons_I_per_phase, IQ17_1);
-
-//		buff_long = IPhase(buffA1,IV_Read_reg.CenterIw);
-//		IV_Read_reg.PU_IW = _IQ17mpy(43691,buff_long)+_IQ17mpy(87381,IV_Read_reg.PU_IW);//cutoff 2.5kHz
-
-				//Phase V
-//				buff_caliq        = IV_Read_reg.PU_IU+IV_Read_reg.PU_IW;
-//				IV_Read_reg.PU_IV = _IQ17mpy(buff_caliq,MinusIQ);
-			}
-			else
-			{
-				//in the case of big main
-				//Phase V
-				//IV_Read_reg.PU_IV = IPhase(buffA1,IV_Read_reg.CenterIv);
-//			    buff_long = IPhase(buffA1, IV_Read_reg.CenterIv);
-//			    IV_Read_reg.PU_IV = LowPassFilter(buff_long, IV_Read_reg.PU_IV, Cons_I_per_phase, IQ17_1);
-
-
-//		buff_long = IPhase(buffA1,IV_Read_reg.CenterIv);
-//		IV_Read_reg.PU_IV = _IQ17mpy(43691,buff_long)+_IQ17mpy(87381,IV_Read_reg.PU_IV);//cutoff 2.5kHz
-
-				//Phase W
-				//IV_Read_reg.PU_IW = IPhase(buffA2,IV_Read_reg.CenterIw);
-//			    buff_long = IPhase(buffA2, IV_Read_reg.CenterIw);
-//			    IV_Read_reg.PU_IW = LowPassFilter(buff_long, IV_Read_reg.PU_IW, Cons_I_per_phase, IQ17_1);
-/*
-//Calculate Phase V -------------------------------------------------------------------------------Gus
-                buff_caliq        = IV_Read_reg.PU_IU+IV_Read_reg.PU_IW;
-                IV_Read_reg.PU_IV = _IQ17mpy(buff_caliq,MinusIQ);
-*/
-//		buff_long = IPhase(buffA1,IV_Read_reg.CenterIw);
-//		IV_Read_reg.PU_IW = _IQ17mpy(43691,buff_long)+_IQ17mpy(87381,IV_Read_reg.PU_IW);//cutoff 2.5kHz
-
-			}
+			
 		}
 		/*=========================Clarke Transform===============================
     	!!!Process : Clarke->IPeak->Irms***
@@ -246,7 +203,7 @@ Uint16 buffA4 = arA2dBuff[A2dA4Buff];
 // 		float Vin_inst = IV_Read_reg.PU_VI/524.4;
 		float Vin_inst = IV_Read_reg.PU_VI*0.001906941; // Using multiplication instead of division for speed
 		float Vout_inst = IV_Read_reg.PU_VO*0.001906941; // Using multiplication instead of division for speed
-		float Iout_inst = IV_Read_reg.PU_IU*0.001906941; // Using multiplication instead of division for speed
+		float Iout_inst = IV_Read_reg.PU_IU*0.001906941*0.014; // Using multiplication instead of division for speed
     	    RMS_Update(&Vrms_In,  Vin_inst);
     	    RMS_Update(&Vrms_Out, Vout_inst);
             
@@ -281,14 +238,13 @@ _iq buffout=0;
 	return buffout;
 }
 ////////////////////////////////////////////////////////////////
-_iq IPhasePok(Uint16 datain,int16 CenterI)
+float IPhasePok(Uint16 datain,int16 CenterI)
 {
     //       A2D-Offset
     //  PU = ----------*2
     //         Offset
 
     int16 buff_cal=0;
-    _iq buffout=0;
 
         float buff_f, Center_f;
 
@@ -308,12 +264,7 @@ _iq IPhasePok(Uint16 datain,int16 CenterI)
 
         // 5) ทำ per-unit แบบ float
         //    PU = (buff_cal / CenterI)
-        buff_f = buff_f / Center_f;
-
-        // 6) float → Q17
-        buffout = (_iq)(buff_f * IQ17_SCALE_F);
-
-    return buffout;
+        return buff_f / Center_f;
 } 
 ////////////////////////////////////////////////////////////////
 //	IV_Read_reg.BuffIp = Analog_reg.PU_B0;//For test purpose only

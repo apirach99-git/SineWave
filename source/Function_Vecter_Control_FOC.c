@@ -90,8 +90,6 @@ extern struct data_grp grp_num[8] ;
 extern int isd_LPF;
 int count_200us = 0;
 
-extern int softstart;
-
 
 //extern int isa,isb,isc,isalpha,isbeta,speed_skp_cnt;
 extern int isd_LPF ,isq_LPF ;
