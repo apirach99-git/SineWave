@@ -90,7 +90,7 @@ extern void ScaleA2DToIPU(void);	//scale data A2D(0-4095) to I PU(-2-2)
 extern void CalIrms(void);			//calculate I rms : Forward clarke->IPeak->IrmsPU
 extern void CalVrms(void);			//calculate Vrms output for Vs_alpha,Vs_beta
 extern _iq IPhase(Uint16 datain,int16 CenterI);//calculate I phase
-extern _iq IPhasePok(Uint16 datain,int16 CenterI);//calculate I phase
+extern float IPhasePok(Uint16 datain,int16 CenterI);//calculate I phase
 extern void CalBuffIp(void);		//calculate buff Ip in loop 5k 
 
 //Module check VDC

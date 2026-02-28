@@ -99,10 +99,11 @@ void ReadIVRMS(void)
 ////////////////////////////////////////////////////////////////
 void CalVrms(void)
 {
-_iq buff_cal=0;
+    float Vf_d = (float)Volt_Vd * 0.00000762939453125f; // Volt_Vd / 131072.0f
+    float Vf_q = (float)Volt_Vq * 0.00000762939453125f; // Volt_Vq / 131072.0f
+    float buff_cal = (Vf_d * Vf_d) + (Vf_q * Vf_q);
 
-	buff_cal = _IQ17mpy(Volt_Vd,Volt_Vd) + _IQ17mpy(Volt_Vq,Volt_Vq);
-	IV_Read_reg.Vout_Rms = _IQ17sqrt(buff_cal);
+	IV_Read_reg.Vout_Rms = (_iq)(sqrtf(buff_cal) * 131072.0f);
 } 
 ////////////////////////////////////////////////////////////////
 void CalIrms(void)
@@ -123,7 +124,9 @@ _iq buffout = IV_Read_reg.BuffIp;
 	}
 
 	//Irms****
-	IV_Read_reg.I_rms = _IQ17div(IV_Read_reg.I_Peak,SQRT2);//Irms = Ip/sqrt(2)
+	float I_Peak_f = (float)IV_Read_reg.I_Peak * 0.00000762939453125f;
+	float Irms_f = I_Peak_f / 1.41421356237f; // Irms = Ip/sqrt(2)
+	IV_Read_reg.I_rms = (_iq)(Irms_f * 131072.0f);
 
 }
 ////////////////////////////////////////////////////////////////
@@ -143,18 +146,18 @@ Uint16 buffA4 = arA2dBuff[A2dA4Buff];
 		if(IV_Read_reg.IV_FLAG.bit.OffsetA2DI==1)
 		{
 
-		    buff_long = IPhasePok(buffA7, IV_Read_reg.CenterVo);
+		    buff_long = (_iq)(IPhasePok(buffA7, IV_Read_reg.CenterVo) * 131072.0f);
             IV_Read_reg.PU_VO = LowPassFilter(buff_long, IV_Read_reg.PU_VO, 0, IQ17_1);
 
 
-           buff_long = IPhasePok(buffA4, IV_Read_reg.CenterVo);
+           buff_long = (_iq)(IPhasePok(buffA4, IV_Read_reg.CenterVo) * 131072.0f);
     //       buff_long = IPhase(buffA4, 1859);
             IV_Read_reg.PU_VI = LowPassFilter(buff_long, IV_Read_reg.PU_VI, 0, IQ17_1);
 
-			buff_long = IPhasePok(buffA0, IV_Read_reg.CenterIu);
+			buff_long = (_iq)(IPhasePok(buffA0, IV_Read_reg.CenterIu) * 131072.0f);
 			IV_Read_reg.PU_IU = LowPassFilter(buff_long, IV_Read_reg.PU_IU, 0, IQ17_1);
 
-			//buff_long = IPhasePok(buffA1, IV_Read_reg.CenterIw);
+			//buff_long = (_iq)(IPhasePok(buffA1, IV_Read_reg.CenterIw) * 131072.0f);
 			//IV_Read_reg.PU_IV = LowPassFilter(buff_long, IV_Read_reg.PU_IV, 0, IQ17_1);
 			IV_Read_reg.PU_IV = buff_long;
             if((SinTheta_fp>=0)&&(IV_Read_reg.PU_VI_last<0))
@@ -235,14 +238,13 @@ _iq buffout=0;
 	return buffout;
 }
 ////////////////////////////////////////////////////////////////
-_iq IPhasePok(Uint16 datain,int16 CenterI)
+float IPhasePok(Uint16 datain,int16 CenterI)
 {
     //       A2D-Offset
     //  PU = ----------*2
     //         Offset
 
     int16 buff_cal=0;
-    _iq buffout=0;
 
         float buff_f, Center_f;
 
@@ -262,12 +264,7 @@ _iq IPhasePok(Uint16 datain,int16 CenterI)
 
         // 5) ทำ per-unit แบบ float
         //    PU = (buff_cal / CenterI)
-        buff_f = buff_f / Center_f;
-
-        // 6) float → Q17
-        buffout = (_iq)(buff_f * IQ17_SCALE_F);
-
-    return buffout;
+        return buff_f / Center_f;
 } 
 ////////////////////////////////////////////////////////////////
 //	IV_Read_reg.BuffIp = Analog_reg.PU_B0;//For test purpose only
